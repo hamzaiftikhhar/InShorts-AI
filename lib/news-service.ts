@@ -2,8 +2,7 @@ import type { NewsResponse, Article } from "./types"
 import { kv } from "@/lib/redis"
 
 // You'll need to get an API key from a service like NewsAPI, GNews, etc.
-const NEWS_API_KEY = process.env.NEWS_API_KEY || "your_api_key_here"
-const NEWS_API_URL = "https://gnews.io/api/v4"
+const NEWS_API_KEY = process.env.NEWS_API_KEY || ""
 
 export async function fetchNews(category = "general", query = ""): Promise<NewsResponse> {
   const cacheKey = `news:${category}:${query}`
@@ -14,12 +13,18 @@ export async function fetchNews(category = "general", query = ""): Promise<NewsR
     return cached
   }
 
+  // If no API key is provided, return mock data immediately
+  if (!NEWS_API_KEY || NEWS_API_KEY.trim() === "") {
+    console.warn("No NEWS_API_KEY provided, using mock data")
+    return fallbackMockData(category, query)
+  }
+
   try {
-    // Build the API URL
-    let apiUrl = `${NEWS_API_URL}/top-headlines?category=${category}&lang=en&apikey=${NEWS_API_KEY}`
+    // Build the API URL - using GNews API as an example
+    let apiUrl = `https://gnews.io/api/v4/top-headlines?category=${category}&lang=en&apikey=${NEWS_API_KEY}`
 
     if (query) {
-      apiUrl = `${NEWS_API_URL}/search?q=${encodeURIComponent(query)}&lang=en&apikey=${NEWS_API_KEY}`
+      apiUrl = `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&apikey=${NEWS_API_KEY}`
     }
 
     const response = await fetch(apiUrl)
@@ -36,7 +41,7 @@ export async function fetchNews(category = "general", query = ""): Promise<NewsR
       description: article.description || "No description available",
       content: article.content || "No content available",
       url: article.url,
-      image: article.image || "/placeholder.svg?height=400&width=600&text=No+Image",
+      image: article.image || null, // We'll handle missing images in the component
       publishedAt: article.publishedAt,
       source: {
         name: article.source.name,
@@ -85,7 +90,7 @@ function fallbackMockData(category = "general", query = ""): NewsResponse {
         description: `This is a sample description for a ${category} news article${queryText}. ${categoryDesc}.`,
         content: `This is the full content of the article about ${category}${queryText}. It contains more detailed information than the description.`,
         url: `https://example.com/article-${category}-${index}`,
-        image: `/placeholder.svg?height=400&width=600&text=${category.toUpperCase()}+${index}`,
+        image: null, // We'll handle this in the component
         publishedAt: new Date(Date.now() - i * 3600000).toISOString(),
         source: {
           name: `${category.charAt(0).toUpperCase() + category.slice(1)} News Source`,

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Bookmark, ExternalLink } from "lucide-react"
+import { Bookmark, ExternalLink, ImageIcon } from "lucide-react"
 import type { Article } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
 import { summarizeArticle } from "@/lib/summarize-service"
@@ -20,6 +20,7 @@ export default function NewsCard({ article }: NewsCardProps) {
   const [sentiment, setSentiment] = useState<"positive" | "negative" | "neutral" | null>(article.sentiment || null)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [bookmarkLoading, setBookmarkLoading] = useState(false)
+  const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
     // Check if article is bookmarked on component mount
@@ -61,6 +62,30 @@ export default function NewsCard({ article }: NewsCardProps) {
     }
   }
 
+  // Generate a category-based background color for placeholder
+  const getCategoryColor = () => {
+    const categories = {
+      technology: "bg-blue-100 dark:bg-blue-900",
+      business: "bg-green-100 dark:bg-green-900",
+      entertainment: "bg-purple-100 dark:bg-purple-900",
+      health: "bg-red-100 dark:bg-red-900",
+      science: "bg-teal-100 dark:bg-teal-900",
+      sports: "bg-orange-100 dark:bg-orange-900",
+      general: "bg-gray-100 dark:bg-gray-800",
+    }
+
+    // Try to guess category from article title or source
+    const text = (article.title + " " + article.source.name).toLowerCase()
+
+    for (const [category, color] of Object.entries(categories)) {
+      if (text.includes(category)) {
+        return color
+      }
+    }
+
+    return categories.general
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -78,9 +103,21 @@ export default function NewsCard({ article }: NewsCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {article.image && (
+        {article.image && !imageError ? (
           <div className="mb-4 overflow-hidden rounded-md">
-            <img src={article.image || "/placeholder.svg"} alt={article.title} className="w-full h-48 object-cover" />
+            <img
+              src={article.image || "/placeholder.svg"}
+              alt={article.title}
+              className="w-full h-48 object-cover"
+              onError={() => setImageError(true)}
+            />
+          </div>
+        ) : (
+          <div className={`mb-4 rounded-md w-full h-48 flex items-center justify-center ${getCategoryColor()}`}>
+            <div className="text-center">
+              <ImageIcon className="h-10 w-10 mx-auto mb-2 opacity-50" />
+              <p className="text-sm opacity-70">{article.source.name}</p>
+            </div>
           </div>
         )}
 
