@@ -15,7 +15,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           variant === "default"
             ? "bg-slate-900 text-slate-50 hover:bg-slate-800"
             : "border border-slate-200 hover:bg-slate-100",
-          size === "default" ? "h-10 py-2 px-4" : "h-9 px-3 rounded-md",
+            size === "default"
+            ? "h-10 py-2 px-4"
+            : size === "sm"
+            ? "h-9 px-3 rounded-md"
+            : "h-10 w-10 p-0", //icon size
           className,
         )}
         ref={ref}

@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import BookmarkedArticles from "@/components/bookmarked-articles"
+import BookmarkedArticles from "@/components/bookmarked-service"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function BookmarksPage() {
