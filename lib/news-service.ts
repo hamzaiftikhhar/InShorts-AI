@@ -1,9 +1,6 @@
 import type { NewsResponse, Article } from "./types"
 import { kv } from "@/lib/redis"
 
-// You'll need to get an API key from a service like NewsAPI, GNews, etc.
-const NEWS_API_KEY = process.env.NEWS_API_KEY || ""
-
 export async function fetchNews(category = "general", query = ""): Promise<NewsResponse> {
   const cacheKey = `news:${category}:${query}`
 
@@ -13,44 +10,38 @@ export async function fetchNews(category = "general", query = ""): Promise<NewsR
     return cached
   }
 
-  // If no API key is provided, return mock data immediately
-  if (!NEWS_API_KEY || NEWS_API_KEY.trim() === "") {
-    console.warn("No NEWS_API_KEY provided, using mock data")
-    return fallbackMockData(category, query)
-  }
-
   try {
-    // Build the API URL - using GNews API as an example
-    let apiUrl = `https://gnews.io/api/v4/top-headlines?category=${category}&lang=en&apikey=${NEWS_API_KEY}`
+    console.log(`Fetching news for category: ${category}, query: ${query}`)
 
-    if (query) {
-      apiUrl = `https://gnews.io/api/v4/search?q=${encodeURIComponent(query)}&lang=en&apikey=${NEWS_API_KEY}`
-    }
+    // Use our server-side API route
+    const apiUrl = `/api/news?category=${encodeURIComponent(category)}&query=${encodeURIComponent(query)}`
 
     const response = await fetch(apiUrl)
 
     if (!response.ok) {
+      const errorData = await response.json()
+      console.error("API Error:", errorData)
       throw new Error(`News API error: ${response.status}`)
     }
 
     const data = await response.json()
 
     // Transform the API response to match our Article type
-    const articles: Article[] = data.articles.map((article: any) => ({
-      title: article.title,
+    const articles: Article[] = (data.articles || []).map((article: any) => ({
+      title: article.title || "No title available",
       description: article.description || "No description available",
-      content: article.content || "No content available",
-      url: article.url,
-      image: article.image || null, // We'll handle missing images in the component
-      publishedAt: article.publishedAt,
+      content: article.content || article.description || "No content available",
+      url: article.url || "#",
+      image: article.urlToImage || article.image || null,
+      publishedAt: article.publishedAt || new Date().toISOString(),
       source: {
-        name: article.source.name,
-        url: article.source.url || "#",
+        name: article.source?.name || "Unknown Source",
+        url: article.source?.url || "#",
       },
     }))
 
     const result = {
-      totalArticles: data.totalArticles || articles.length,
+      totalArticles: data.totalResults || articles.length,
       articles,
     }
 
@@ -61,13 +52,15 @@ export async function fetchNews(category = "general", query = ""): Promise<NewsR
   } catch (error) {
     console.error("Error fetching news:", error)
 
-    // Fallback to mock data if API fails
-    return fallbackMockData(category, query)
+    // Fall back to mock data if the API request fails
+    return getMockNewsData(category, query)
   }
 }
 
-// Fallback mock data in case the API fails
-function fallbackMockData(category = "general", query = ""): NewsResponse {
+// Mock news data generator
+function getMockNewsData(category = "general", query = ""): NewsResponse {
+  console.log("Falling back to mock data")
+
   const mockCategories = {
     general: "General news about various topics",
     technology: "Technology news about AI, software, and hardware",
@@ -78,22 +71,26 @@ function fallbackMockData(category = "general", query = ""): NewsResponse {
     sports: "Sports news about games, players, and teams",
   }
 
+  const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1)
+  const queryText = query ? ` related to "${query}"` : ""
+  const categoryDesc = mockCategories[category as keyof typeof mockCategories] || mockCategories.general
+
+  // Generate mock articles
   const baseArticles: Article[] = Array(10)
     .fill(0)
     .map((_, i) => {
       const index = i + 1
-      const categoryDesc = mockCategories[category as keyof typeof mockCategories] || mockCategories.general
-      const queryText = query ? ` related to "${query}"` : ""
+      const date = new Date(Date.now() - i * 3600000)
 
       return {
-        title: `${category.charAt(0).toUpperCase() + category.slice(1)} News Article ${index}${queryText}`,
+        title: `${categoryTitle} News Article ${index}${queryText}`,
         description: `This is a sample description for a ${category} news article${queryText}. ${categoryDesc}.`,
         content: `This is the full content of the article about ${category}${queryText}. It contains more detailed information than the description.`,
         url: `https://example.com/article-${category}-${index}`,
-        image: null, // We'll handle this in the component
-        publishedAt: new Date(Date.now() - i * 3600000).toISOString(),
+        image: null,
+        publishedAt: date.toISOString(),
         source: {
-          name: `${category.charAt(0).toUpperCase() + category.slice(1)} News Source`,
+          name: `${categoryTitle} News Source`,
           url: `https://example.com/${category}-source`,
         },
       }

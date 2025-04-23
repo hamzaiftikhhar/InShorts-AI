@@ -65,13 +65,13 @@ export default function NewsCard({ article }: NewsCardProps) {
   // Generate a category-based background color for placeholder
   const getCategoryColor = () => {
     const categories = {
-      technology: "bg-blue-100 dark:bg-blue-900",
-      business: "bg-green-100 dark:bg-green-900",
-      entertainment: "bg-purple-100 dark:bg-purple-900",
-      health: "bg-red-100 dark:bg-red-900",
-      science: "bg-teal-100 dark:bg-teal-900",
-      sports: "bg-orange-100 dark:bg-orange-900",
-      general: "bg-gray-100 dark:bg-gray-800",
+      technology: "bg-blue-900/30 dark:bg-blue-900/50",
+      business: "bg-green-900/30 dark:bg-green-900/50",
+      entertainment: "bg-purple-900/30 dark:bg-purple-900/50",
+      health: "bg-red-900/30 dark:bg-red-900/50",
+      science: "bg-teal-900/30 dark:bg-teal-900/50",
+      sports: "bg-orange-900/30 dark:bg-orange-900/50",
+      general: "bg-gray-900/30 dark:bg-gray-800/50",
     }
 
     // Try to guess category from article title or source
@@ -87,10 +87,10 @@ export default function NewsCard({ article }: NewsCardProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="border-gray-800/30 dark:border-gray-700/30 bg-white dark:bg-gray-900/90">
+      <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="line-clamp-2 pr-8">{article.title}</CardTitle>
+          <CardTitle className="line-clamp-2 pr-8 text-lg">{article.title}</CardTitle>
           <Button variant="ghost" size="sm" className="p-1 h-auto" onClick={handleBookmark} disabled={bookmarkLoading}>
             <Bookmark
               className={`h-5 w-5 ${isBookmarked ? "fill-current" : ""}`}
@@ -98,11 +98,11 @@ export default function NewsCard({ article }: NewsCardProps) {
             />
           </Button>
         </div>
-        <CardDescription className="mt-2">
+        <CardDescription className="mt-2 text-gray-500 dark:text-gray-400">
           {article.source.name} • {formatDate(article.publishedAt)}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-2">
         {article.image && !imageError ? (
           <div className="mb-4 overflow-hidden rounded-md">
             <img
@@ -125,7 +125,16 @@ export default function NewsCard({ article }: NewsCardProps) {
           <div className="space-y-3">
             <p className="text-sm">{summary}</p>
             {sentiment && (
-              <Badge variant={sentiment === "positive" ? "default" : "outline"} className="w-fit">
+              <Badge
+                variant={sentiment === "positive" ? "default" : "outline"}
+                className={`w-fit ${
+                  sentiment === "positive"
+                    ? "bg-green-900/80 text-white"
+                    : sentiment === "negative"
+                      ? "border-red-500/50 text-red-400"
+                      : "border-gray-500/50 text-gray-400"
+                }`}
+              >
                 {sentiment}
               </Badge>
             )}
@@ -134,15 +143,21 @@ export default function NewsCard({ article }: NewsCardProps) {
           <p className="text-sm line-clamp-3">{article.description}</p>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" size="sm" onClick={handleSummarize} disabled={loading || !!summary}>
+      <CardFooter className="flex justify-between pt-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleSummarize}
+          disabled={loading || !!summary}
+          className="border-gray-800/20 dark:border-gray-700/30 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800/50"
+        >
           {loading ? "Summarizing..." : summary ? "Summarized" : "Summarize"}
         </Button>
         <a
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-3 border border-input bg-background hover:bg-accent hover:text-accent-foreground gap-1"
+          className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-3 border border-gray-800/20 dark:border-gray-700/30 bg-black text-white dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 gap-1"
         >
           Read Full <ExternalLink className="h-3 w-3" />
         </a>

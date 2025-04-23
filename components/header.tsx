@@ -4,7 +4,7 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Header() {
   return (
-    <header className="border-b bg-background">
+    <header className="border-b border-gray-800/10 dark:border-gray-700/20 bg-white dark:bg-black">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-2">
           <div className="w-6 h-6 border-2 border-current flex items-center justify-center">
