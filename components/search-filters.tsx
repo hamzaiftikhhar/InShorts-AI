@@ -46,14 +46,10 @@ export default function SearchFilters() {
 
   return (
     <div className="space-y-4">
-      <Tabs value={category} onValueChange={handleCategoryChange} className="w-full">
-        <TabsList className="w-full h-auto flex flex-wrap justify-start gap-2 bg-transparent">
+      <Tabs value={category} onValueChange={handleCategoryChange}>
+        <TabsList className="w-full flex flex-wrap justify-start gap-2 bg-slate-100">
           {categories.map((cat) => (
-            <TabsTrigger
-              key={cat.value}
-              value={cat.value}
-              className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-            >
+            <TabsTrigger key={cat.value} value={cat.value}>
               {cat.label}
             </TabsTrigger>
           ))}
@@ -62,7 +58,7 @@ export default function SearchFilters() {
 
       <form onSubmit={handleSearch} className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500" />
           <Input
             type="search"
             placeholder="Search news..."

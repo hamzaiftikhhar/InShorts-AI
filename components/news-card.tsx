@@ -4,10 +4,8 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink, MessageSquare, ThumbsDown, ThumbsUp } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import type { Article } from "@/lib/types"
-import { cn } from "@/lib/utils"
-import { summarizeArticle } from "@/lib/summarize-service"
 import { formatDate } from "@/lib/utils"
 
 interface NewsCardProps {
@@ -24,39 +22,17 @@ export default function NewsCard({ article }: NewsCardProps) {
 
     setLoading(true)
     try {
-      const result = await summarizeArticle(article)
-      setSummary(result.summary)
-      setSentiment(result.sentiment)
+      // Mock summarization for now
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
+      setSummary(
+        `This is a mock summary of the article about ${article.title}. It provides key points in a concise format.`,
+      )
+      setSentiment(Math.random() > 0.6 ? "positive" : Math.random() > 0.3 ? "neutral" : "negative")
     } catch (error) {
       console.error("Failed to summarize article:", error)
     } finally {
       setLoading(false)
-    }
-  }
-
-  const getSentimentIcon = () => {
-    if (!sentiment) return null
-
-    switch (sentiment) {
-      case "positive":
-        return <ThumbsUp className="h-4 w-4 text-green-500" />
-      case "negative":
-        return <ThumbsDown className="h-4 w-4 text-red-500" />
-      default:
-        return <MessageSquare className="h-4 w-4 text-gray-500" />
-    }
-  }
-
-  const getSentimentColor = () => {
-    if (!sentiment) return ""
-
-    switch (sentiment) {
-      case "positive":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
-      case "negative":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
     }
   }
 
@@ -79,9 +55,8 @@ export default function NewsCard({ article }: NewsCardProps) {
           <div className="space-y-3">
             <p className="text-sm">{summary}</p>
             {sentiment && (
-              <Badge variant="outline" className={cn("flex items-center gap-1 w-fit", getSentimentColor())}>
-                {getSentimentIcon()}
-                <span className="capitalize">{sentiment}</span>
+              <Badge variant={sentiment === "positive" ? "default" : "outline"} className="w-fit">
+                {sentiment}
               </Badge>
             )}
           </div>
