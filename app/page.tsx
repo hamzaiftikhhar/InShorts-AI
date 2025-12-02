@@ -1,4 +1,4 @@
-import NewsFeed from "@/news-feed"
+import NewsFeed from "@/components/news-feed"
 import SearchFilters from "@/components/search-filters"
 
 export default function Home() {
