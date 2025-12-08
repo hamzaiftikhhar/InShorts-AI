@@ -90,7 +90,10 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color
-    return color ? `  --color-${key}: ${color};` : null
+    // sanitize color values to avoid injecting malicious content into the <style>
+    const sanitize = (val: string) =>
+      String(val).replace(/[<>}]/g, "").replace(/\u2028|\u2029/g, "")
+    return color ? `  --color-${key}: ${sanitize(color)};` : null
   })
   .join("\n")}
 }

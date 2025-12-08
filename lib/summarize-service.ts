@@ -10,7 +10,7 @@ export async function summarizeArticle(article: Article): Promise<SummaryResult>
   const cached = await kv.get<SummaryResult>(cacheKey)
   if (cached) return cached
 
-  const openaiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY
+  const openaiKey = process.env.OPENAI_API_KEY
 
   // If no OpenAI key, fall back to a light local summary (mock)
   if (!openaiKey) {
