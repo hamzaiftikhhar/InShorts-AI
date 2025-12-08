@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import NewsCard from "@/components/news-card"
-import { getBookmarkedArticles } from "@/lib/bookmark-service"
 import type { Article } from "@/lib/types"
 import { Loader2 } from "lucide-react"
 
@@ -13,8 +12,9 @@ export default function BookmarkedArticles() {
   useEffect(() => {
     const loadBookmarks = async () => {
       try {
-        const bookmarkedArticles = await getBookmarkedArticles()
-        setArticles(bookmarkedArticles)
+        const res = await fetch(`/api/bookmarks`)
+        const data = await res.json()
+        setArticles(data.articles || [])
       } catch (error) {
         console.error("Failed to fetch bookmarks:", error)
       } finally {

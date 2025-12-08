@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { getTopKeywords, getTopSources } from "@/lib/stats-service"
 import { Pie, PieChart, Cell, Legend, ResponsiveContainer } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 
@@ -12,11 +11,14 @@ export default function NewsStats() {
 
   useEffect(() => {
     const loadStats = async () => {
-      const keywordData = await getTopKeywords()
-      const sourceData = await getTopSources()
-
-      setKeywords(keywordData)
-      setSources(sourceData)
+      try {
+        const res = await fetch(`/api/stats`)
+        const data = await res.json()
+        setKeywords(data.keywords || [])
+        setSources(data.sources || [])
+      } catch (err) {
+        console.error("Failed to load stats", err)
+      }
     }
 
     loadStats()

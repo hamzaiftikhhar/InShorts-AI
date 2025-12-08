@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import NewsCard from "@/components/news-card"
-import { fetchNews } from "@/lib/news-service"
 import type { Article } from "@/lib/types"
 import { Loader2 } from "lucide-react"
 
@@ -21,8 +20,9 @@ export default function NewsFeed() {
 
     const loadNews = async () => {
       try {
-        const data = await fetchNews(category, query)
-        setArticles(data.articles)
+        const res = await fetch(`/api/news?category=${encodeURIComponent(category)}&query=${encodeURIComponent(query)}`)
+        const data = await res.json()
+        setArticles(data.articles || [])
       } catch (error) {
         console.error("Failed to fetch news:", error)
       } finally {

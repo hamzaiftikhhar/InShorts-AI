@@ -7,8 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Bookmark, ExternalLink, ImageIcon } from "lucide-react"
 import type { Article } from "@/lib/types"
 import { formatDate } from "@/lib/utils"
-import { summarizeArticle } from "@/lib/summarize-service"
-import { bookmarkArticle, isArticleBookmarked } from "@/lib/bookmark-service"
+// Summarization and bookmarks are handled via secure server API routes
 
 interface NewsCardProps {
   article: Article
@@ -25,8 +24,13 @@ export default function NewsCard({ article }: NewsCardProps) {
   useEffect(() => {
     // Check if article is bookmarked on component mount
     const checkBookmarkStatus = async () => {
-      const status = await isArticleBookmarked(article.url)
-      setIsBookmarked(status)
+      try {
+        const res = await fetch(`/api/bookmarks?url=${encodeURIComponent(article.url)}`)
+        const data = await res.json()
+        setIsBookmarked(Boolean(data?.isBookmarked))
+      } catch (err) {
+        console.error("Failed to check bookmark status", err)
+      }
     }
 
     checkBookmarkStatus()
@@ -37,9 +41,18 @@ export default function NewsCard({ article }: NewsCardProps) {
 
     setLoading(true)
     try {
-      const result = await summarizeArticle(article)
-      setSummary(result.summary)
-      setSentiment(result.sentiment)
+      const res = await fetch(`/api/summarize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ article }),
+      })
+      const result = await res.json()
+      if (res.ok) {
+        setSummary(result.summary)
+        setSentiment(result.sentiment)
+      } else {
+        throw new Error(result?.error || "Summarization failed")
+      }
     } catch (error) {
       console.error("Failed to summarize article:", error)
       // Fallback to a basic summary if the API fails
@@ -53,8 +66,17 @@ export default function NewsCard({ article }: NewsCardProps) {
   const handleBookmark = async () => {
     setBookmarkLoading(true)
     try {
-      await bookmarkArticle(article)
-      setIsBookmarked(!isBookmarked)
+      const res = await fetch(`/api/bookmarks`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ article }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setIsBookmarked(Boolean(data.isBookmarked))
+      } else {
+        throw new Error(data?.error || "Bookmark failed")
+      }
     } catch (error) {
       console.error("Failed to bookmark article:", error)
     } finally {
