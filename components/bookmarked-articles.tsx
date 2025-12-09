@@ -13,8 +13,28 @@ export default function BookmarkedArticles() {
     const loadBookmarks = async () => {
       try {
         const res = await fetch(`/api/bookmarks`)
-        const data = await res.json()
-        setArticles(data.articles || [])
+        if (res.ok) {
+          const data = await res.json()
+          setArticles(data.articles || [])
+          setLoading(false)
+          return
+        }
+      } catch (error) {
+        // fallthrough to localStorage fallback
+      }
+
+      // Fallback to localStorage bookmarks when server is not available
+      try {
+        const raw = localStorage.getItem("newsmate:bookmarks")
+        if (!raw) {
+          setArticles([])
+          return
+        }
+
+        const bookmarksObj = JSON.parse(raw)
+        const arr = Object.values(bookmarksObj).map((b) => (typeof b === "string" ? JSON.parse(b) : b))
+        setArticles(arr)
+        return
       } catch (error) {
         console.error("Failed to fetch bookmarks:", error)
       } finally {

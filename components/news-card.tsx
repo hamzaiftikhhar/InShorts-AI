@@ -26,10 +26,24 @@ export default function NewsCard({ article }: NewsCardProps) {
     const checkBookmarkStatus = async () => {
       try {
         const res = await fetch(`/api/bookmarks?url=${encodeURIComponent(article.url)}`)
-        const data = await res.json()
-        setIsBookmarked(Boolean(data?.isBookmarked))
+        if (res.ok) {
+          const data = await res.json()
+          setIsBookmarked(Boolean(data?.isBookmarked))
+          return
+        }
       } catch (err) {
-        console.error("Failed to check bookmark status", err)
+        // fallthrough to localStorage fallback
+      }
+
+      // Fallback: check localStorage bookmarks if API unavailable
+      try {
+        const raw = localStorage.getItem("newsmate:bookmarks")
+        if (raw) {
+          const bookmarks = JSON.parse(raw || "{}")
+          setIsBookmarked(Boolean(bookmarks[article.url]))
+        }
+      } catch (err) {
+        console.error("Failed to read local bookmarks", err)
       }
     }
 
@@ -79,6 +93,32 @@ export default function NewsCard({ article }: NewsCardProps) {
       }
     } catch (error) {
       console.error("Failed to bookmark article:", error)
+      // Fallback: persist bookmarks locally when server is not available
+      try {
+        const key = "newsmate:bookmarks"
+        const raw = localStorage.getItem(key)
+        const bookmarks = raw ? JSON.parse(raw) : {}
+
+        if (bookmarks[article.url]) {
+          delete bookmarks[article.url]
+          setIsBookmarked(false)
+        } else {
+          bookmarks[article.url] = JSON.stringify({
+            title: article.title,
+            description: article.description,
+            url: article.url,
+            image: article.image,
+            publishedAt: article.publishedAt,
+            source: article.source,
+            bookmarkedAt: new Date().toISOString(),
+          })
+          setIsBookmarked(true)
+        }
+
+        localStorage.setItem(key, JSON.stringify(bookmarks))
+      } catch (err) {
+        console.error("Failed to persist bookmark locally", err)
+      }
     } finally {
       setBookmarkLoading(false)
     }
