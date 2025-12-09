@@ -49,14 +49,21 @@ export default function BookmarkedArticles() {
 
     loadBookmarks()
 
-    // Listen for storage changes (when bookmark is toggled from news-card)
+    // Listen for storage changes (cross-tab sync and same-tab updates)
     const handleStorageChange = () => {
       loadBookmarksFromStorage()
     }
     window.addEventListener("storage", handleStorageChange)
 
+    // Listen for custom bookmarksChanged event (fired when bookmarks are toggled on same tab)
+    const handleBookmarksChanged = () => {
+      loadBookmarksFromStorage()
+    }
+    window.addEventListener("bookmarksChanged", handleBookmarksChanged)
+
     return () => {
       window.removeEventListener("storage", handleStorageChange)
+      window.removeEventListener("bookmarksChanged", handleBookmarksChanged)
     }
   }, [])
 
