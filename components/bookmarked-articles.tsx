@@ -9,6 +9,25 @@ export default function BookmarkedArticles() {
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
 
+  const loadBookmarksFromStorage = () => {
+    try {
+      const raw = localStorage.getItem("newsmate:bookmarks")
+      if (!raw) {
+        setArticles([])
+        return
+      }
+
+      const bookmarksObj = JSON.parse(raw)
+      const arr = Object.values(bookmarksObj)
+        .map((b) => (typeof b === "string" ? JSON.parse(b) : b))
+        .sort((a: Article, b: Article) => new Date(b.bookmarkedAt!).getTime() - new Date(a.bookmarkedAt!).getTime())
+      setArticles(arr)
+    } catch (error) {
+      console.error("Failed to load bookmarks from localStorage", error)
+      setArticles([])
+    }
+  }
+
   useEffect(() => {
     const loadBookmarks = async () => {
       try {
@@ -24,25 +43,21 @@ export default function BookmarkedArticles() {
       }
 
       // Fallback to localStorage bookmarks when server is not available
-      try {
-        const raw = localStorage.getItem("newsmate:bookmarks")
-        if (!raw) {
-          setArticles([])
-          return
-        }
-
-        const bookmarksObj = JSON.parse(raw)
-        const arr = Object.values(bookmarksObj).map((b) => (typeof b === "string" ? JSON.parse(b) : b))
-        setArticles(arr)
-        return
-      } catch (error) {
-        console.error("Failed to fetch bookmarks:", error)
-      } finally {
-        setLoading(false)
-      }
+      loadBookmarksFromStorage()
+      setLoading(false)
     }
 
     loadBookmarks()
+
+    // Listen for storage changes (when bookmark is toggled from news-card)
+    const handleStorageChange = () => {
+      loadBookmarksFromStorage()
+    }
+    window.addEventListener("storage", handleStorageChange)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+    }
   }, [])
 
   if (loading) {
