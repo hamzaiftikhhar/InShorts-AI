@@ -88,6 +88,8 @@ export default function NewsCard({ article }: NewsCardProps) {
       const data = await res.json()
       if (res.ok) {
         setIsBookmarked(Boolean(data.isBookmarked))
+        // Notify other components of bookmark change
+        window.dispatchEvent(new Event("bookmarksChanged"))
       } else {
         throw new Error(data?.error || "Bookmark failed")
       }
@@ -116,6 +118,8 @@ export default function NewsCard({ article }: NewsCardProps) {
         }
 
         localStorage.setItem(key, JSON.stringify(bookmarks))
+        // Notify other components of bookmark change
+        window.dispatchEvent(new Event("bookmarksChanged"))
       } catch (err) {
         console.error("Failed to persist bookmark locally", err)
       }
