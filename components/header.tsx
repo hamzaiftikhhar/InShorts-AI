@@ -16,14 +16,14 @@ export default function Header() {
         <div className="flex items-center space-x-4">
           <Link 
             href="/bookmarks" 
-            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 px-3 py-2 rounded-md transition-colors"
+            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 active:bg-gray-200 dark:active:bg-gray-800 active:text-black dark:active:text-white px-3 py-2 rounded-md transition-colors"
           >
             <Bookmark className="h-4 w-4" />
             <span>Bookmarks</span>
           </Link>
           <Link 
             href="/stats" 
-            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 px-3 py-2 rounded-md transition-colors"
+            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-900 active:bg-gray-200 dark:active:bg-gray-800 active:text-black dark:active:text-white px-3 py-2 rounded-md transition-colors"
           >
             <BarChart className="h-4 w-4" />
             <span>Stats</span>
