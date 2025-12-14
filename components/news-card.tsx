@@ -157,7 +157,7 @@ export default function NewsCard({ article }: NewsCardProps) {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="line-clamp-2 pr-8 text-lg">{article.title}</CardTitle>
-          <Button variant="outline" size="sm" className="p-1 h-auto" onClick={handleBookmark} disabled={bookmarkLoading}>
+          <Button variant="outline" size="sm" className="p-1 h-auto hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white active:bg-gray-200 dark:active:bg-gray-600" onClick={handleBookmark} disabled={bookmarkLoading}>
             <Bookmark
               className={`h-5 w-5 ${isBookmarked ? "fill-current" : ""}`}
               aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
@@ -215,7 +215,7 @@ export default function NewsCard({ article }: NewsCardProps) {
           size="sm"
           onClick={handleSummarize}
           disabled={loading || !!summary}
-          className="border-gray-800/20 dark:border-gray-700/30 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800/50"
+          className="border-gray-800/20 dark:border-gray-700/30 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800/50 active:bg-gray-200 dark:active:bg-gray-700"
         >
           {loading ? "Summarizing..." : summary ? "Summarized" : "Summarize"}
         </Button>

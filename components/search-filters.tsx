@@ -73,7 +73,7 @@ export default function SearchFilters() {
         </div>
         <Button
           type="submit"
-          className="bg-black text-white dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100"
+          className="bg-black text-white dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 active:bg-gray-800 dark:active:bg-gray-200"
         >
           Search
         </Button>
