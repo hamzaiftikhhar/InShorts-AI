@@ -16,7 +16,7 @@ export default function Header() {
         <div className="flex items-center space-x-4">
           <Link
             href="/bookmarks"
-            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-700 dark:hover:text-green-200 hover:bg-green-50 dark:hover:bg-green-700 active:bg-green-200 dark:active:bg-green-600 active:text-green-900 dark:active:text-white px-3 py-2 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-green-200 dark:focus-visible:ring-green-700"
+            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-white dark:active:bg-white active:text-black dark:active:text-black px-3 py-2 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-700"
           >
             <Bookmark className="h-4 w-4" />
             <span>Bookmarks</span>
@@ -24,7 +24,7 @@ export default function Header() {
 
           <Link
             href="/stats"
-            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-700 dark:hover:text-green-200 hover:bg-green-50 dark:hover:bg-green-700 active:bg-green-200 dark:active:bg-green-600 active:text-green-900 dark:active:text-white px-3 py-2 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-green-200 dark:focus-visible:ring-green-700"
+            className="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-white dark:active:bg_white active:text-black dark:active:text-black px-3 py-2 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-gray-200 dark:focus-visible:ring-gray-700"
           >
             <BarChart className="h-4 w-4" />
             <span>Stats</span>
