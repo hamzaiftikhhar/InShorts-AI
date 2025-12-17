@@ -59,7 +59,6 @@ export default function NewsStats() {
               config={{
                 keywords: {
                   label: "Keywords",
-                  colors: COLORS,
                 },
               }}
               className="h-[200px]"
@@ -84,7 +83,6 @@ export default function NewsStats() {
               config={{
                 sources: {
                   label: "Sources",
-                  colors: COLORS,
                 },
               }}
               className="h-[200px]"
