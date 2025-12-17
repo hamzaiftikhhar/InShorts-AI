@@ -29,7 +29,7 @@ export default function BookmarkedArticles() {
   }
 
   useEffect(() => {
-    const loadBookmarks = async () => {
+    const refreshBookmarks = async () => {
       try {
         const res = await fetch(`/api/bookmarks`)
         if (res.ok) {
@@ -47,17 +47,19 @@ export default function BookmarkedArticles() {
       setLoading(false)
     }
 
-    loadBookmarks()
+    // Initial load
+    refreshBookmarks()
 
-    // Listen for storage changes (cross-tab sync and same-tab updates)
+    // Listen for storage changes (cross-tab sync)
     const handleStorageChange = () => {
       loadBookmarksFromStorage()
     }
     window.addEventListener("storage", handleStorageChange)
 
-    // Listen for custom bookmarksChanged event (fired when bookmarks are toggled on same tab)
+    // Listen for custom bookmarksChanged event (fired when bookmarks are toggled on same tab or via API)
     const handleBookmarksChanged = () => {
-      loadBookmarksFromStorage()
+      // Try to refresh from server first, then fallback to storage
+      refreshBookmarks()
     }
     window.addEventListener("bookmarksChanged", handleBookmarksChanged)
 
