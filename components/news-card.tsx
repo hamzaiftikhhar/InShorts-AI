@@ -170,18 +170,18 @@ export default function NewsCard({ article }: NewsCardProps) {
       </CardHeader>
       <CardContent className="pb-2">
         {article.image && !imageError ? (
-          <div className="mb-4 overflow-hidden rounded-md">
+          <div className="mb-6 overflow-hidden">
             <img
               src={article.image || "/placeholder.svg"}
               alt={article.title}
-              className="w-full h-48 object-cover"
+              className="w-full h-56 object-cover"
               onError={() => setImageError(true)}
             />
           </div>
         ) : (
-          <div className={`mb-4 rounded-md w-full h-48 flex items-center justify-center ${getCategoryColor()}`}>
+          <div className={`mb-6 w-full h-56 flex items-center justify-center ${getCategoryColor()}`}>
             <div className="text-center">
-              <ImageIcon className="h-10 w-10 mx-auto mb-2 opacity-50" />
+              <ImageIcon className="h-12 w-12 mx-auto mb-2 opacity-50" />
               <p className="text-sm opacity-70">{article.source.name}</p>
             </div>
           </div>
@@ -215,7 +215,7 @@ export default function NewsCard({ article }: NewsCardProps) {
           size="sm"
           onClick={handleSummarize}
           disabled={loading || !!summary}
-          className="border-gray-800/20 dark:border-gray-700/30 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800/50 active:bg-gray-200 dark:active:bg-gray-700"
+          className="border-gray-800/20 dark:border-gray-700/30 bg-transparent hover:bg-white/5 dark:hover:bg-white/5 active:bg-white/10"
         >
           {loading ? "Summarizing..." : summary ? "Summarized" : "Summarize"}
         </Button>
@@ -223,7 +223,7 @@ export default function NewsCard({ article }: NewsCardProps) {
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-3 border border-gray-800/20 dark:border-gray-700/30 bg-black text-white dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 gap-1"
+          className="inline-flex items-center justify-center rounded-full text-sm font-medium h-9 px-4 border border-gray-800/20 dark:border-gray-700/30 bg-black text-white dark:bg-white dark:text-black hover:bg-gray-900 dark:hover:bg-gray-100 gap-2"
         >
           Read Full <ExternalLink className="h-3 w-3" />
         </a>

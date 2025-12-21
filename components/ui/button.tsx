@@ -13,13 +13,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:opacity-50 disabled:pointer-events-none",
           variant === "default"
-            ? "bg-slate-900 text-slate-50 hover:bg-slate-800 active:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-slate-300 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 dark:active:bg-slate-300 dark:focus-visible:ring-slate-700 transform-gpu transition-transform "
-            : "border border-slate-200 hover:bg-slate-100 active:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-slate-300 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:active:text-white dark:focus-visible:ring-slate-700 transform-gpu transition-transform",
+            ? "bg-slate-900 text-slate-50 hover:bg-slate-800 active:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-slate-300 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 dark:active:bg-slate-300 dark:focus-visible:ring-slate-700 transform-gpu transition-transform hover:-translate-y-0.5 active:translate-y-0"
+            : "border border-slate-200 hover:bg-slate-100 active:brightness-95 focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-slate-300 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:active:text-white dark:focus-visible:ring-slate-700 transform-gpu transition-transform hover:-translate-y-0.5 active:translate-y-0",
             size === "default"
-            ? "h-10 py-2 px-4"
+            ? "h-10 py-2 px-4 rounded-xl"
             : size === "sm"
-            ? "h-9 px-3 rounded-md"
-            : "h-10 w-10 p-0", //icon size
+            ? "h-9 px-3 rounded-xl"
+            : "h-10 w-10 p-0 rounded-xl", //icon size
           className,
         )}
         ref={ref}
