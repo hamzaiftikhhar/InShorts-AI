@@ -4,10 +4,10 @@ import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Header() {
   return (
-    <header className="glass border-b border-border">
+    <header className="glass border-b border-border animate-fade-up">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-2">
-          <div className="w-6 h-6 border-2 border-current flex items-center justify-center">
+          <div className="w-6 h-6 border-2 border-current flex items-center justify-center rounded-md glass/hover p-0.5">
             <div className="w-3 h-3 border-t-2 border-l-2 border-current"></div>
           </div>
           <span className="font-bold text-xl">NewsMate</span>

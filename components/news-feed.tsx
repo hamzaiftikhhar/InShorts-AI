@@ -52,8 +52,10 @@ export default function NewsFeed() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {articles.map((article) => (
-        <NewsCard key={article.url} article={article} />
+      {articles.map((article, idx) => (
+        <div key={article.url} style={{ ['--delay' as any]: `${idx * 60}ms` }} className="animate-fade-up">
+          <NewsCard article={article} />
+        </div>
       ))}
     </div>
   )

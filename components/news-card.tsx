@@ -157,7 +157,7 @@ export default function NewsCard({ article }: NewsCardProps) {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="line-clamp-2 pr-8 text-lg">{article.title}</CardTitle>
-          <Button variant="outline" size="sm" className="p-1 h-auto hover:bg-white/5 dark:hover:bg-white/5 dark:hover:text-white active:bg-white/10" onClick={handleBookmark} disabled={bookmarkLoading}>
+          <Button variant="outline" size="sm" className="p-1 h-auto hover:bg-white/5 dark:hover:bg-white/5 dark:hover:text-white active:bg-white/10 transform-gpu transition-transform" onClick={handleBookmark} disabled={bookmarkLoading}>
             <Bookmark
               className={`h-5 w-5 ${isBookmarked ? "fill-current" : ""}`}
               aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
