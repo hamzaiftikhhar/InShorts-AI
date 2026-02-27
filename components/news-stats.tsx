@@ -23,6 +23,9 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart"
 
+// Added a simple stats summary section
+import React from 'react';
+
 export default function NewsStats() {
   const [keywords, setKeywords] = useState<{ name: string; value: number }[]>([])
   const [sources, setSources] = useState<{ name: string; value: number }[]>([])
