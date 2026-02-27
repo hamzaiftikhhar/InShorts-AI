@@ -38,6 +38,7 @@ export default function NewsStats() {
   const [sentiment, setSentiment] = useState<{ name: string; value: number }[]>([])
   const [articlesPerDay, setArticlesPerDay] = useState<{ date: string; count: number }[]>([])
   const [authors, setAuthors] = useState<{ name: string; value: number }[]>([])
+  const [trendingTopics, setTrendingTopics] = useState<string[]>([])
 
   useEffect(() => {
     const loadStats = async () => {
@@ -50,6 +51,7 @@ export default function NewsStats() {
         setSentiment(data.sentiment || [])
         setArticlesPerDay(data.articlesPerDay || [])
         setAuthors(data.topAuthors || [])
+        setTrendingTopics(data.trendingTopics || ["AI", "Climate", "Elections"])
       } catch (err) {
         console.error("Failed to load stats", err)
       }
@@ -83,6 +85,23 @@ export default function NewsStats() {
 
   return (
     <div className="space-y-6">
+      {/* Trending Topics Section */}
+      <div className="mb-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Trending Topics</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="flex flex-wrap gap-2">
+              {trendingTopics.map((topic, idx) => (
+                <li key={idx} className="px-3 py-1 bg-blue-100 rounded text-blue-700 text-sm font-medium">
+                  {topic}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
       {/* KPI row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
