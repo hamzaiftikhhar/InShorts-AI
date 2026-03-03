@@ -8,6 +8,7 @@ export default function AuthorsPage() {
         <p className="text-lg text-gray-500">Meet the contributors behind the news summaries.</p>
         {/* You can add more content or fetch author stats dynamically here */}
       </div>
+        <footer className="mt-8 text-xs text-gray-400 text-center">Author data is sourced from news articles metadata.</footer>
     </main>
   );
 }

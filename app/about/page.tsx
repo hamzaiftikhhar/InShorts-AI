@@ -5,6 +5,7 @@ export default function AboutPage() {
         <h1 className="text-3xl font-bold">About InShorts-AI</h1>
         <p className="text-lg text-gray-600">This project provides AI-powered news summaries and analytics, helping users stay informed with concise and insightful information.</p>
       </div>
+      <footer className="mt-8 text-xs text-gray-400 text-center">InShorts-AI is an open-source project for news summarization and analytics.</footer>
     </main>
   );
 }
