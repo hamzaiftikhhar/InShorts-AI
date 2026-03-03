@@ -12,6 +12,7 @@ export default function StatsPage() {
           <NewsStats />
         </Suspense>
       </div>
+      <footer className="mt-8 text-xs text-gray-400 text-center">Stats are updated daily based on the latest news data.</footer>
     </main>
   )
 }

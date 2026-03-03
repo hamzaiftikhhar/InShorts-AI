@@ -31,6 +31,7 @@ export default function Header() {
           </Link>
 
           <ThemeToggle />
+          <span className="rounded-full bg-gray-200 w-8 h-8 flex items-center justify-center text-gray-500 ml-2">U</span>
         </div>
       </div>
     </header>
