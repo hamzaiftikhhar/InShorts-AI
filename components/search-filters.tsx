@@ -78,6 +78,7 @@ export default function SearchFilters() {
           Search
         </Button>
       </form>
+        <p className="text-xs text-gray-400 mt-2">Tip: Use filters to narrow down your news search.</p>
     </div>
   )
 }
