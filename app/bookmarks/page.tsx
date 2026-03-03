@@ -12,6 +12,7 @@ export default function BookmarksPage() {
           <BookmarkedArticles />
         </Suspense>
       </div>
+      <footer className="mt-8 text-xs text-gray-400 text-center">Bookmarked articles are saved locally in your browser.</footer>
     </main>
   )
 }

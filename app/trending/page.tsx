@@ -7,6 +7,7 @@ export default function TrendingPage() {
       <p className="mb-2">Explore the most popular topics in the news right now.</p>
       <p className="text-sm text-gray-500">Updated every hour for fresh trends.</p>
       {/* You can add more content or fetch trending topics dynamically here */}
+      <footer className="mt-8 text-xs text-gray-400 text-center">Trending topics are based on aggregated news data.</footer>
     </div>
   );
 }
