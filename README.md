@@ -1,3 +1,10 @@
+
+# About InShorts-AI
+
+InShorts-AI is an open-source project that provides AI-powered news summarization and analytics. It helps users stay informed with concise news summaries, trending topics, and insightful statistics, all in a modern web interface.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
